@@ -1,0 +1,9 @@
+# Ensure all text files use LF in the repository
+* text=auto eol=lf
+
+# Explicitly set node_modules files to LF (optional)
+/node_modules/** text eol=lf
+
+# Windows-specific files (e.g., .bat, .ps1) should use CRLF
+*.bat text eol=crlf
+*.ps1 text eol=crlf
