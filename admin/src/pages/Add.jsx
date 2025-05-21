@@ -15,7 +15,6 @@ const Add = ({ token }) => {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("Men");
   const [subCategory, setSubCategory] = useState("Topwear");
-  const [bestseller, setBestseller] = useState(false);
   const [sizes, setSizes] = useState([]);
 
   useEffect(() => {
@@ -31,7 +30,6 @@ const Add = ({ token }) => {
       formData.append("price", price);
       formData.append("category", category);
       formData.append("subCategory", subCategory);
-      formData.append("bestseller", bestseller);
       formData.append("sizes", JSON.stringify(sizes));
 
       image1 && formData.append('image1',image1);
@@ -137,11 +135,6 @@ const Add = ({ token }) => {
             <p className={`${sizes.includes('XXL') ? 'bg-pink-100' : ' bg-slate-200'} px-3 py-1 cursor-pointer`}>XXL</p>
           </div>
         </div>
-      </div>
-
-      <div className="flex gap-2 mt-4">
-        <input onChange={() => setBestseller((prev) => !prev)} checked={bestseller} type="checkbox" id="bestseller" />
-        <label htmlFor="bestseller" className="cursor-pointer">Add to Bestseller</label>
       </div>
 
       <button type="submit" className="w-28 py-3 mt-6 bg-black text-white rounded">

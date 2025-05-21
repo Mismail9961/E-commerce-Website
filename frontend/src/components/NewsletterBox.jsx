@@ -5,9 +5,9 @@ const NewsletterBox = () => {
             event.preventDefault()
     }
   return (
-    <div className='text-center'>
+    <div className='text-center flex flex-col justify-center items-center'>
             <p className='text-2xl font-medium text-gray-800'>Subscribe now & get 20% off</p>
-            <p className='text-gray-400 mt-3'>
+            <p className='text-gray-400 mt-5'>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, debitis. Aperiam aliquam dolores commodi, veritatis consequatur magni repellat obcaecati beatae similique minima facere fuga excepturi veniam numquam eveniet nostrum placeat.
             </p>
             <form onSubmit={onSubmitHandler} className='w-full sm:w-1/2 flex items-center gap-3 mx-auto my-6 border pl-3'>
