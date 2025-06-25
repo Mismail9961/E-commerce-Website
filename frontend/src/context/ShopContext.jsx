@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, use, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
 
 export const ShopContext = createContext();
 
@@ -12,8 +12,8 @@ const ShopContextProvider = (props) => {
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [cartItems, setCartItems] = useState({});
-  const [products,setProducts] = useState([]);
-  const [token,setToken] = useState('')
+  const [products, setProducts] = useState([]);
+  const [token, setToken] = useState("");
   const navigate = useNavigate();
 
   // Add orders state
@@ -81,19 +81,21 @@ const ShopContextProvider = (props) => {
       return;
     }
 
-    const newOrders = Object.entries(cartItems).map(([itemId, sizes]) => {
-      const product = products.find(p => p._id === itemId);
-      return Object.entries(sizes).map(([size, quantity]) => ({
-        ...product,
-        orderId: `ORD${Date.now()}${Math.floor(Math.random() * 1000)}`,
-        size,
-        quantity,
-        status: "Processing",
-        date: new Date().toISOString().split("T")[0],
-      }));
-    }).flat();
+    const newOrders = Object.entries(cartItems)
+      .map(([itemId, sizes]) => {
+        const product = products.find((p) => p._id === itemId);
+        return Object.entries(sizes).map(([size, quantity]) => ({
+          ...product,
+          orderId: `ORD${Date.now()}${Math.floor(Math.random() * 1000)}`,
+          size,
+          quantity,
+          status: "Processing",
+          date: new Date().toISOString().split("T")[0],
+        }));
+      })
+      .flat();
 
-    setOrders(prevOrders => [...prevOrders, ...newOrders]);
+    setOrders((prevOrders) => [...prevOrders, ...newOrders]);
     setCartItems({}); // Clear cart after placing order
     toast.success("Order placed successfully");
     navigate("/orders");
@@ -101,8 +103,8 @@ const ShopContextProvider = (props) => {
 
   // Function to update an existing order
   const updateOrder = (orderId, updates) => {
-    setOrders(prevOrders =>
-      prevOrders.map(order =>
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
         order.orderId === orderId ? { ...order, ...updates } : order
       )
     );
@@ -111,21 +113,38 @@ const ShopContextProvider = (props) => {
 
   const getProductData = async () => {
     try {
-      const response = await axios.get(backendUrl + '/api/product/list')
-      if(response.data.success){
-        setProducts(response.data.products)
+      const response = await axios.get(backendUrl + "/api/product/list");
+      if (response.data.success) {
+        setProducts(response.data.products);
       } else {
-        toast.error(response.data.message)
+        toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+      console.log(error);
+      toast.error(error.message);
     }
-  }
+  };
 
-  useEffect(()=>{
-    getProductData()
-  },[])
+  useEffect(() => {
+    getProductData();
+  }, []);
+
+  // Restore token from localStorage on app load
+  useEffect(() => {
+    const localToken = localStorage.getItem("token");
+    if (localToken) {
+      setToken(localToken);
+    }
+  }, []);
+
+  // Sync context token to localStorage on change
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+    }
+  }, [token]);
 
   const value = {
     products,
@@ -145,10 +164,12 @@ const ShopContextProvider = (props) => {
     updateOrder,
     backendUrl,
     setToken,
-    token
+    token,
   };
 
-  return <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>;
+  return (
+    <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>
+  );
 };
 
 export default ShopContextProvider;
