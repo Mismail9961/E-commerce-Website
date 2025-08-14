@@ -8,20 +8,24 @@ const Cart = () => {
   const [cartData, setCartData] = useState([]);
 
   useEffect(() => {
-    const tempData = [];
-    for (const items in cartItems) {
-      for (const item in cartItems[items]) {
-        if (cartItems[items][item] > 0) {
-          tempData.push({
-            _id: items,
-            size: item,
-            quantity: cartItems[items][item],
-          });
+    if (products.length > 0 && cartItems && Object.keys(cartItems).length > 0) {
+      const tempData = [];
+      for (const productId of Object.keys(cartItems)) {
+        for (const size of Object.keys(cartItems[productId])) {
+          if (cartItems[productId][size] > 0) {
+            tempData.push({
+              _id: productId,
+              size,
+              quantity: cartItems[productId][size],
+            });
+          }
         }
       }
+      setCartData(tempData);
+    } else {
+      setCartData([]); // Ensure cartData clears when empty
     }
-    setCartData(tempData); // Update state with processed data
-  }, [cartItems]);
+  }, [cartItems, products]);
 
   return (
     <div className="p-4">
@@ -30,18 +34,18 @@ const Cart = () => {
         <p className="text-gray-500">Your cart is empty.</p>
       ) : (
         <div className="space-y-4">
-          {cartData.map((cartItem, index) => {
-            const product = products.find((p) => p._id === cartItem._id); // Match product by ID
-            if (!product) return null; // Skip if product not found
+          {cartData.map((cartItem) => {
+            const product = products.find((p) => p._id === cartItem._id);
+            if (!product) return null;
 
             return (
               <div
-                key={`${cartItem._id}-${cartItem.size}-${index}`}
+                key={`${cartItem._id}-${cartItem.size}`}
                 className="flex items-center justify-between border-b pb-2"
               >
                 <div className="flex items-center gap-4">
                   <img
-                    src={product.image[0]} // Assuming products have an image array
+                    src={product.image?.[0] || "/placeholder.jpg"}
                     alt={product.name}
                     className="w-16 h-16 object-cover"
                   />
@@ -60,7 +64,7 @@ const Cart = () => {
                   <button
                     onClick={() =>
                       updateQuantity(cartItem._id, cartItem.size, 0)
-                    } // Fixed: cartItem instead of item
+                    }
                     className="text-red-500 hover:text-red-700 font-semibold"
                   >
                     Remove
@@ -73,10 +77,15 @@ const Cart = () => {
       )}
       <div className="flex justify-end my-20">
         <div className="w-full sm:w-[450px]">
-          <CartTotal/>
+          <CartTotal />
           <div className="w-full text-end">
-                  <button onClick={()=>navigate("place-order")} className="bg-black text-white text-sm my-8 px-8 py-3">PROCEED TO CHECKOUT</button>
-            </div>
+            <button
+              onClick={() => navigate("/place-order")}
+              className="bg-black text-white text-sm my-8 px-8 py-3"
+            >
+              PROCEED TO CHECKOUT
+            </button>
+          </div>
         </div>
       </div>
     </div>
