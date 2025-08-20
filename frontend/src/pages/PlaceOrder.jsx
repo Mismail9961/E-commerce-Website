@@ -3,10 +3,12 @@ import Title from "../components/Title";
 import CartTotal from "../components/CartTotal";
 import { assets } from "../assets/assets";
 import { ShopContext } from "../context/ShopContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState("cod");
-  const { navigate } = useContext(ShopContext);
+  const { navigate,backendUrl,token,cartItems,getCartAmount,getCartCount,delivery_fee,products,setCartItems } = useContext(ShopContext);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -25,8 +27,45 @@ const PlaceOrder = () => {
     setFormData((data) => ({ ...data, [name]: value }));
   };
 
+  const submitHandler = async (event) => {
+    event.preventDefault()
+    try {
+      let orderItems = []
+      for(const items in cartItems){
+        for(const item in cartItems[items]){
+          if(cartItems[items][item] > 0){
+            const itemInfo = structuredClone(products.find(products => products._id === items ))
+            if(itemInfo){
+              itemInfo.size = item
+              itemInfo.quantity = cartItems[items][item]
+              orderItems.push(itemInfo)
+            }
+          }
+        }
+      }
+      let orderData = {
+        address:formData,
+        items:orderItems,
+        amount: getCartAmount() + delivery_fee
+      }
+      switch(method){
+        case 'cod':
+          const response = await axios.post(backendUrl + '/api/order/place',orderData,{headers:{token}})
+          if (response.data.success) {
+            setCartItems({})
+            navigate('/orders')
+          } else {
+            toast.error(response.data.message)
+          }
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  }
+
   return (
-    <form className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
+    <form onSubmit={submitHandler} className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
       {/* LEFT SIDE */}
       <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
         <div className="text-xl sm:text-2xl my-3">

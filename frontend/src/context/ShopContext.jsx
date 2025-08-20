@@ -47,6 +47,24 @@ const ShopContextProvider = (props) => {
     }
   };
 
+  // Calculate total cart amount
+const getCartAmount = () => {
+  let totalAmount = 0;
+  for (const productId in cartItems) {
+    const product = products.find((p) => p._id === productId);
+    if (product) {
+      for (const size in cartItems[productId]) {
+        const quantity = cartItems[productId][size];
+        if (quantity > 0) {
+          totalAmount += product.price * quantity;
+        }
+      }
+    }
+  }
+  return totalAmount;
+};
+
+
   // Update cart quantity
   const updateQuantity = async (itemId, size, quantity) => {
     let cartData = structuredClone(cartItems);
@@ -182,26 +200,28 @@ const ShopContextProvider = (props) => {
     }
   }, [token]);
 
-  const value = {
-    products,
-    currency,
-    delivery_fee,
-    search,
-    setSearch,
-    showSearch,
-    setShowSearch,
-    cartItems,
-    addToCart,
-    updateQuantity,
-    getCartCount,
-    navigate,
-    orders,
-    placeOrder,
-    updateOrder,
-    backendUrl,
-    setToken,
-    token,
-  };
+const value = {
+  products,
+  currency,
+  delivery_fee,
+  search,
+  setSearch,
+  showSearch,
+  setShowSearch,
+  cartItems,
+  addToCart,
+  updateQuantity,
+  getCartCount,
+  getCartAmount,
+  setCartItems,
+  navigate,
+  orders,
+  placeOrder,
+  updateOrder,
+  backendUrl,
+  setToken,
+  token,
+};
 
   return (
     <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>
