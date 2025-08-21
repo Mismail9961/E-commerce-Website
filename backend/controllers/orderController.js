@@ -8,22 +8,30 @@ const placeOrder = async (req, res) => {
 
     const orderData = {
       userId,
-      items,
+      items: items.map((p) => ({
+        productId: p.productId,
+        name: p.name,
+        price: p.price,
+        qty: p.qty,
+        image: p.image,
+      })),
       address,
-      amount,
+      amount, // total order price
       paymentMethod: "COD",
       payment: false,
       date: Date.now(),
+      status: "Order Placed",
     };
 
     const newOrder = new orderModel(orderData);
     await newOrder.save();
 
     await userModel.findByIdAndUpdate(userId, { cartData: {} });
-    res.json({ success: true, message: "Order Placed" });
+
+    res.json({ success: true, message: "Order Placed", order: newOrder });
   } catch (error) {
-    console.log(error);
-    res.json({ success: true, message:error.message });
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -37,7 +45,25 @@ const placeOrderRazorPay = async (req, res) => {};
 const allOrder = async (req, res) => {};
 
 //User Order for Frontend
-const usersOrder = async (req, res) => {};
+// User Order for Frontend
+const usersOrder = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.body.userId;
+
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "User ID required" });
+    }
+
+    const orders = await orderModel.find({ userId }).sort({ date: -1 });
+
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
 
 //update Order status for admin panel
 const updateStatus = async (req, res) => {};
