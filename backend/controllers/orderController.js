@@ -42,16 +42,25 @@ const placeOrderStripe = async (req, res) => {};
 const placeOrderRazorPay = async (req, res) => {};
 
 //All Orders for admin
-const allOrder = async (req, res) => {};
+const allOrder = async (req, res) => {
+  try {
+    const orders = await orderModel.find({});
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
 
 //User Order for Frontend
-// User Order for Frontend
 const usersOrder = async (req, res) => {
   try {
     const userId = req.user?.id || req.body.userId;
 
     if (!userId) {
-      return res.status(400).json({ success: false, message: "User ID required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "User ID required" });
     }
 
     const orders = await orderModel.find({ userId }).sort({ date: -1 });
@@ -62,8 +71,6 @@ const usersOrder = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
-
 
 //update Order status for admin panel
 const updateStatus = async (req, res) => {};
