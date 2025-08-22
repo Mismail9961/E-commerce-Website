@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { backendUrl } from "../App"; // adjust path if needed
 
-const AdminOrders = ({ token, currency = "$" }) => {
+const AdminOrders = ({ token }) => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const fetchOrders = async () => {
-    if (!token) return;
+    if (!token){
+      return nulll
+    }
 
     try {
-      const res = await axios.get(`${backendUrl}/api/order/list`, {
+      const res = await axios.post(`${backendUrl}/api/order/list`,{},{
         headers: { token },
       });
+      console.log(res)
+      console.log(res.data)
       if (res.data.orders) setOrders(res.data.orders);
     } catch (error) {
       console.error("Failed to fetch orders:", error);

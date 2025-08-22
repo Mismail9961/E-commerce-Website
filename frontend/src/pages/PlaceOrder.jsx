@@ -8,7 +8,17 @@ import { toast } from "react-toastify";
 
 const PlaceOrder = () => {
   const [method, setMethod] = useState("cod");
-  const { navigate,backendUrl,token,cartItems,getCartAmount,getCartCount,delivery_fee,products,setCartItems } = useContext(ShopContext);
+  const {
+    navigate,
+    backendUrl,
+    token,
+    cartItems,
+    getCartAmount,
+    getCartCount,
+    delivery_fee,
+    products,
+    setCartItems,
+  } = useContext(ShopContext);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -28,48 +38,82 @@ const PlaceOrder = () => {
   };
 
   const submitHandler = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
+
+    if (!token) {
+      toast.error("Please log in to place an order.");
+      return;
+    }
+
+    if (getCartCount() === 0) {
+      toast.error("Your cart is empty.");
+      return;
+    }
+
     try {
-      let orderItems = []
-      for(const items in cartItems){
-        for(const item in cartItems[items]){
-          if(cartItems[items][item] > 0){
-            const itemInfo = structuredClone(products.find(products => products._id === items ))
-            if(itemInfo){
-              itemInfo.size = item
-              itemInfo.quantity = cartItems[items][item]
-              orderItems.push(itemInfo)
+      const orderItems = [];
+
+      for (const productId in cartItems) {
+        for (const size in cartItems[productId]) {
+          if (cartItems[productId][size] > 0) {
+            const itemInfo = structuredClone(
+              products.find((p) => p._id === productId)
+            );
+            if (itemInfo) {
+              itemInfo.size = size;
+              itemInfo.quantity = cartItems[productId][size];
+              orderItems.push(itemInfo);
             }
           }
         }
       }
-      let orderData = {
-        address:formData,
-        items:orderItems,
-        amount: getCartAmount() + delivery_fee
-      }
-      switch(method){
-        case 'cod':
-          const response = await axios.post(backendUrl + '/api/order/place',orderData,{headers:{token}})
+
+      const orderData = {
+        address: formData,
+        items: orderItems,
+        amount: getCartAmount() + delivery_fee,
+      };
+
+      switch (method) {
+        case "cod": {
+          const response = await axios.post(
+            `${backendUrl}/api/order/place`,
+            orderData,
+            { headers: { token } }
+          );
           if (response.data.success) {
-            setCartItems({})
-            navigate('/orders')
+            toast.success("Order placed successfully!");
+            setCartItems({});
+            navigate("/orders");
           } else {
-            toast.error(response.data.message)
+            toast.error(response.data.message || "Failed to place order.");
           }
+          break;
+        }
+        case "stripe":
+        case "razorpay":
+          toast.info("This payment method is not implemented yet.");
+          break;
+        default:
+          toast.error("Invalid payment method selected.");
       }
     } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+      console.error(error);
+      toast.error(
+        error.response?.data?.message || error.message || "Something went wrong."
+      );
     }
-  }
+  };
 
   return (
-    <form onSubmit={submitHandler} className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">
+    <form
+      onSubmit={submitHandler}
+      className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t"
+    >
       {/* LEFT SIDE */}
       <div className="flex flex-col gap-4 w-full sm:max-w-[480px]">
         <div className="text-xl sm:text-2xl my-3">
-          <Title text1={"DELIVERY"} text2={"INFORMATION"} />
+          <Title text1="DELIVERY" text2="INFORMATION" />
         </div>
 
         <div className="flex gap-3">
@@ -141,7 +185,7 @@ const PlaceOrder = () => {
             value={formData.zipcode}
             required
             className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-            type="number"
+            type="text"
             placeholder="Zip Code"
           />
           <input
@@ -161,7 +205,7 @@ const PlaceOrder = () => {
           value={formData.phone}
           required
           className="border border-gray-300 rounded py-1.5 px-3.5 w-full"
-          type="number"
+          type="text"
           placeholder="Phone"
         />
       </div>
@@ -173,7 +217,7 @@ const PlaceOrder = () => {
         </div>
 
         <div className="mt-12">
-          <Title text1={"PAYMENT"} text2={"METHOD"} />
+          <Title text1="PAYMENT" text2="METHOD" />
 
           {/* Payment method selection */}
           <div className="flex gap-3 flex-col lg:flex-row">
@@ -223,7 +267,7 @@ const PlaceOrder = () => {
                 }`}
               ></p>
               <div className="w-16 h-8 mx-4 flex items-center justify-center">
-                <p className="text-gray-500 text-sm font-medium mx-4">
+                <p className="text-gray-500 text-[11px] font-medium mx-4">
                   CASH ON DELIVERY
                 </p>
               </div>
@@ -234,6 +278,7 @@ const PlaceOrder = () => {
             <button
               type="submit"
               className="bg-black text-white px-16 py-3"
+              disabled={getCartCount() === 0}
             >
               PLACE ORDER
             </button>

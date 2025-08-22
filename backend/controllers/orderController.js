@@ -8,15 +8,9 @@ const placeOrder = async (req, res) => {
 
     const orderData = {
       userId,
-      items: items.map((p) => ({
-        productId: p.productId,
-        name: p.name,
-        price: p.price,
-        qty: p.qty,
-        image: p.image,
-      })),
+      items,
       address,
-      amount, // total order price
+      amount,
       paymentMethod: "COD",
       payment: false,
       date: Date.now(),
@@ -28,7 +22,7 @@ const placeOrder = async (req, res) => {
 
     await userModel.findByIdAndUpdate(userId, { cartData: {} });
 
-    res.json({ success: true, message: "Order Placed", order: newOrder });
+    res.json({ success: true, message: "Order Placed"});
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
