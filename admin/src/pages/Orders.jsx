@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { backendUrl } from "../App"; // adjust if needed
+import { backendUrl, currency } from "../App";
+import { toast } from "react-toastify";
 
-const AdminOrders = ({ token, currency = "$" }) => {
+const AdminOrders = ({ token }) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,8 +22,26 @@ const AdminOrders = ({ token, currency = "$" }) => {
       if (res.data.orders) setOrders(res.data.orders.reverse());
     } catch (error) {
       console.error("Failed to fetch orders:", error);
+      toast.error("Failed to fetch orders");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const statusHandler = async (event, orderId) => {
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/order/status`,
+        { orderId, status: event.target.value },
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        await fetchOrders();
+        toast.success("Order status updated");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.response?.data?.message || "Failed to update status");
     }
   };
 
@@ -63,17 +82,17 @@ const AdminOrders = ({ token, currency = "$" }) => {
                       ? new Date(order.date).toLocaleDateString()
                       : "N/A"}
                   </p>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                      order.status === "Delivered"
-                        ? "bg-green-100 text-green-700"
-                        : order.status === "Shipped"
-                        ? "bg-blue-100 text-blue-700"
-                        : "bg-orange-100 text-orange-700"
-                    }`}
+                  <select
+                    onChange={(event) => statusHandler(event, order._id)}
+                    value={order.status}
+                    className="p-2 font-semibold border rounded"
                   >
-                    {order.status || "Order Placed"}
-                  </span>
+                    <option value="Order Placed">Order Placed</option>
+                    <option value="Packing">Packing</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Out for delivery">Out for delivery</option>
+                    <option value="Delivered">Delivered</option>
+                  </select>
                 </div>
 
                 {/* User & Address */}
