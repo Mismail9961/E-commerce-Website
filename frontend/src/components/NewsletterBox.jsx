@@ -1,21 +1,51 @@
-import React from 'react'
+import React from "react";
+import { motion } from "framer-motion";
 
 const NewsletterBox = () => {
-    const onSubmitHandler = (event) => {
-            event.preventDefault()
-    }
-  return (
-    <div className='text-center flex flex-col justify-center items-center'>
-            <p className='text-2xl font-medium text-gray-800'>Subscribe now & get 20% off</p>
-            <p className='text-gray-400 mt-5'>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, debitis. Aperiam aliquam dolores commodi, veritatis consequatur magni repellat obcaecati beatae similique minima facere fuga excepturi veniam numquam eveniet nostrum placeat.
-            </p>
-            <form onSubmit={onSubmitHandler} className='w-full sm:w-1/2 flex items-center gap-3 mx-auto my-6 border pl-3'>
-                <input type="email" className='w-full sm:flex-1 outline-none' placeholder='Enter Your Email Address' />
-                <button type='submit' className='bg-black text-white text-xs px-10 py-4'>SUBSCRIBE</button>
-            </form>
-    </div>
-  )
-}
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+  };
 
-export default NewsletterBox
+  return (
+    <div className="bg-white py-20 text-center px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="max-w-2xl mx-auto space-y-6"
+      >
+        {/* Heading */}
+        <h2 className="text-3xl md:text-4xl font-serif tracking-wide text-gray-900">
+          Subscribe & Enjoy 20% Off
+        </h2>
+
+        {/* Description */}
+        <p className="text-gray-500 text-sm md:text-base leading-relaxed font-light">
+          Join our exclusive newsletter for early access to new collections,
+          curated style inspiration, and special member-only offers.
+        </p>
+
+        {/* Form */}
+        <form
+          onSubmit={onSubmitHandler}
+          className="flex flex-col sm:flex-row items-center gap-4 mt-6"
+        >
+          <input
+            type="email"
+            required
+            placeholder="Enter your email"
+            className="w-full sm:flex-1 border-b border-gray-400 bg-transparent px-2 py-3 text-sm outline-none focus:border-black transition-all"
+          />
+          <button
+            type="submit"
+            className="px-8 py-3 bg-black text-white text-sm tracking-wide hover:bg-gray-900 transition-all"
+          >
+            SUBSCRIBE
+          </button>
+        </form>
+      </motion.div>
+    </div>
+  );
+};
+
+export default NewsletterBox;

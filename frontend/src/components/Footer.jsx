@@ -8,13 +8,7 @@ const Footer = () => {
         <div>
           <img src={assets.logo} className="mb-5 w-32" alt="" />
           <p className="w-full md:w-2/3 text-gray-600">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-            minima omnis, veniam iusto odit itaque doloremque quas, vero quia
-            alias totam delectus accusantium nostrum quasi aut rem quis.
-            Voluptas, omnis! Excepturi necessitatibus, velit at explicabo ab
-            aperiam maiores itaque! Odit adipisci molestias ducimus ratione
-            nisi, nostrum earum dolor aliquid obcaecati officia eum numquam illo
-            asperiores ipsum? Laborum voluptatibus minus molestiae.
+            Where timeless craftsmanship meets modern design. Discover a world of elegance and quality curated just for you.
           </p>
         </div>
 
