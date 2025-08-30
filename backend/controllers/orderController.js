@@ -78,7 +78,35 @@ const updateStatus = async (req, res) => {
   }
 };
 
+// Delete Order for Admin
+const deleteOrder = async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    if (!orderId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Order ID required" });
+    }
+
+    const deleted = await orderModel.findByIdAndDelete(orderId);
+
+    if (!deleted) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+
+    res.json({ success: true, message: "Order deleted successfully" });
+  } catch (error) {
+    console.error("Delete order error:", error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
 export {
+  deleteOrder,
   updateStatus,
   usersOrder,
   allOrder,

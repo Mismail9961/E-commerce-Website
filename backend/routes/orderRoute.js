@@ -6,6 +6,7 @@ import {
   placeOrderRazorPay,
   placeOrderStripe,
   placeOrder,
+  deleteOrder,
 } from "../controllers/orderController.js";
 import adminAuth from "../middleware/adminAuth.js";
 import authUser from "../middleware/auth.js";
@@ -18,5 +19,6 @@ orderRouter.post("/place", authUser, placeOrder);
 orderRouter.post("/razorpay", authUser, placeOrderRazorPay);
 orderRouter.post("/stripe", authUser, placeOrderStripe);
 orderRouter.post("/userOrder", authUser, usersOrder);
+orderRouter.post("/delete", adminAuth, deleteOrder);
 
 export default orderRouter;

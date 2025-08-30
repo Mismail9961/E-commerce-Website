@@ -45,6 +45,23 @@ const AdminOrders = ({ token }) => {
     }
   };
 
+  const deleteOrder = async (orderId) => {
+    try {
+      const response = await axios.post(
+        `${backendUrl}/api/order/delete`,
+        { orderId },
+        { headers: { token } }
+      );
+      if (response.data.success) {
+        setOrders((prev) => prev.filter((o) => o._id !== orderId));
+        toast.success("Order deleted successfully");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error(error?.response?.data?.message || "Failed to delete order");
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
   }, [token]);
@@ -82,17 +99,25 @@ const AdminOrders = ({ token }) => {
                       ? new Date(order.date).toLocaleDateString()
                       : "N/A"}
                   </p>
-                  <select
-                    onChange={(event) => statusHandler(event, order._id)}
-                    value={order.status}
-                    className="p-2 text-xs sm:text-sm md:text-base font-semibold border rounded w-full sm:w-auto"
-                  >
-                    <option value="Order Placed">Order Placed</option>
-                    <option value="Packing">Packing</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Out for delivery">Out for delivery</option>
-                    <option value="Delivered">Delivered</option>
-                  </select>
+                  <div className="flex gap-2">
+                    <select
+                      onChange={(event) => statusHandler(event, order._id)}
+                      value={order.status}
+                      className="p-2 text-xs sm:text-sm md:text-base font-semibold border rounded w-full sm:w-auto"
+                    >
+                      <option value="Order Placed">Order Placed</option>
+                      <option value="Packing">Packing</option>
+                      <option value="Shipped">Shipped</option>
+                      <option value="Out for delivery">Out for delivery</option>
+                      <option value="Delivered">Delivered</option>
+                    </select>
+                    <button
+                      onClick={() => deleteOrder(order._id)}
+                      className="px-3 py-2 bg-red-600 text-white text-xs sm:text-sm rounded hover:bg-red-700 transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </div>
 
                 {/* User & Address */}
