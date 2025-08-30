@@ -30,22 +30,19 @@ const Cart = () => {
       }
       setCartData(tempData);
     } else {
-      setCartData([]);
+      setCartData([]); 
     }
   }, [cartItems, products]);
 
   if (!token) return null; // prevent flash before redirect
 
   return (
-    <div className="p-4 sm:p-6 mt-20">
-      <h1 className="text-2xl font-bold mb-6 text-center sm:text-left">
-        Your Cart
-      </h1>
-
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
       {cartData.length === 0 ? (
-        <p className="text-gray-500 text-center">Your cart is empty.</p>
+        <p className="text-gray-500">Your cart is empty.</p>
       ) : (
-        <div className="space-y-6">
+        <div className="space-y-4">
           {cartData.map((cartItem) => {
             const product = products.find((p) => p._id === cartItem._id);
             if (!product) return null;
@@ -53,28 +50,23 @@ const Cart = () => {
             return (
               <div
                 key={`${cartItem._id}-${cartItem.size}`}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b pb-4"
+                className="flex items-center justify-between border-b pb-2"
               >
-                {/* Product Info */}
                 <div className="flex items-center gap-4">
                   <img
                     src={product.image?.[0] || "/placeholder.jpg"}
                     alt={product.name}
-                    className="w-20 h-20 sm:w-16 sm:h-16 object-cover rounded-md"
+                    className="w-16 h-16 object-cover"
                   />
                   <div>
-                    <p className="font-semibold text-sm sm:text-base">
-                      {product.name}
-                    </p>
-                    <p className="text-xs sm:text-sm text-gray-600">
-                      Size: {cartItem.size} | Qty: {cartItem.quantity}
+                    <p className="font-semibold">{product.name}</p>
+                    <p className="text-sm text-gray-600">
+                      Size: {cartItem.size} | Quantity: {cartItem.quantity}
                     </p>
                   </div>
                 </div>
-
-                {/* Price + Remove */}
-                <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto">
-                  <p className="font-medium text-sm sm:text-base">
+                <div className="flex items-center gap-4">
+                  <p className="font-medium">
                     {currency}
                     {(product.price * cartItem.quantity).toFixed(2)}
                   </p>
@@ -82,7 +74,7 @@ const Cart = () => {
                     onClick={() =>
                       updateQuantity(cartItem._id, cartItem.size, 0)
                     }
-                    className="text-red-500 hover:text-red-700 text-sm sm:text-base font-semibold"
+                    className="text-red-500 hover:text-red-700 font-semibold"
                   >
                     Remove
                   </button>
@@ -92,23 +84,19 @@ const Cart = () => {
           })}
         </div>
       )}
-
-      {/* Cart Total + Checkout */}
-      {cartData.length > 0 && (
-        <div className="flex justify-center sm:justify-end my-10">
-          <div className="w-full sm:w-[450px] bg-gray-50 p-4 rounded-lg shadow-sm">
-            <CartTotal />
-            <div className="w-full text-center sm:text-right">
-              <button
-                onClick={() => navigate("/place-order")}
-                className="bg-black text-white text-sm sm:text-base font-semibold my-6 px-6 sm:px-8 py-3 w-full sm:w-auto rounded-md hover:bg-gray-900 transition"
-              >
-                PROCEED TO CHECKOUT
-              </button>
-            </div>
+      <div className="flex justify-end my-20">
+        <div className="w-full sm:w-[450px]">
+          <CartTotal />
+          <div className="w-full text-end">
+            <button
+              onClick={() => navigate("/place-order")}
+              className="bg-black text-white text-sm my-8 px-8 py-3"
+            >
+              PROCEED TO CHECKOUT
+            </button>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

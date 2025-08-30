@@ -70,7 +70,7 @@ const Collection = () => {
   }, [products, category, subCategory, sortOption, search, showSearch]);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-8 pt-12 border-t bg-white px-6 lg:px-12">
+    <div className="flex flex-col sm:flex-row gap-8 pt-10 border-t bg-white px-6 lg:px-12">
       {/* LEFT FILTER PANEL */}
       <div className="min-w-60">
         <p

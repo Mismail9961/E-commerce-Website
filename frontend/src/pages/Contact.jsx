@@ -4,7 +4,7 @@ const Contact = () => {
   return (
     <div>
       {/* Contact Us Section */}
-      <section className="py-16 px-4 md:px-16">
+      <section className="py-14 px-4 md:px-16">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-lg font-semibold text-gray-600 mb-8 flex items-center">
             CONTACT US

@@ -108,15 +108,16 @@ const PlaceOrder = () => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-col sm:flex-row justify-between gap-8 pt-10 sm:pt-16 min-h-[80vh] border-t px-4 sm:px-8 lg:px-16"
+      className="flex flex-col lg:flex-row justify-between gap-8 pt-10 sm:pt-16 min-h-[58vh] border-t px-4 sm:px-8 lg:px-16"
     >
       {/* LEFT SIDE - Delivery Info */}
-      <div className="flex flex-col gap-6 w-full sm:max-w-[500px] bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-        <div className="text-xl sm:text-2xl mb-2">
+      <div className="flex flex-col gap-6 w-full lg:max-w-[500px] bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-200">
+        <div className="text-lg sm:text-2xl">
           <Title text1="Delivery" text2="Information" />
         </div>
 
-        <div className="flex gap-3">
+        {/* First & Last Name */}
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             onChange={onChangeHandler}
             name="firstName"
@@ -157,7 +158,8 @@ const PlaceOrder = () => {
           placeholder="Street"
         />
 
-        <div className="flex gap-3">
+        {/* City & State */}
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             onChange={onChangeHandler}
             name="city"
@@ -178,7 +180,8 @@ const PlaceOrder = () => {
           />
         </div>
 
-        <div className="flex gap-3">
+        {/* Zip & Country */}
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             onChange={onChangeHandler}
             name="zipcode"
@@ -212,15 +215,17 @@ const PlaceOrder = () => {
 
       {/* RIGHT SIDE - Payment + Cart Total */}
       <div className="flex-1 flex flex-col gap-8">
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+        {/* Cart Summary */}
+        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-200">
           <CartTotal />
         </div>
 
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+        {/* Payment */}
+        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-200">
           <Title text1="Payment" text2="Method" />
 
-          {/* Payment method selection */}
-          <div className="flex gap-4 flex-col lg:flex-row mt-6">
+          {/* Payment options */}
+          <div className="flex flex-col sm:flex-row gap-4 mt-6">
             <div
               onClick={() => setMethod("stripe")}
               className={`flex items-center gap-4 border rounded-xl p-4 cursor-pointer transition-all ${
@@ -272,11 +277,12 @@ const PlaceOrder = () => {
             </div>
           </div>
 
-          <div className="w-full text-end mt-8">
+          {/* Submit Button */}
+          <div className="w-full text-center sm:text-end mt-8">
             <button
               type="submit"
               disabled={getCartCount() === 0}
-              className="uppercase tracking-wide bg-black text-white text-sm font-medium px-12 py-3 rounded-full hover:bg-gray-900 transition-all disabled:opacity-50"
+              className="uppercase tracking-wide bg-black text-white text-sm font-medium px-10 py-3 rounded-full hover:bg-gray-900 transition-all disabled:opacity-50"
             >
               Place Order
             </button>

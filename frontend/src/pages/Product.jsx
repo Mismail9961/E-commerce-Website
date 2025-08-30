@@ -20,7 +20,7 @@ const Product = () => {
   }, [productId, products]);
 
   return productData ? (
-    <div className="border-t pt-12 transition-opacity ease-in duration-500 opacity-100 font-light">
+    <div className="border-t pt-14 transition-opacity ease-in duration-500 opacity-100 font-light">
       {/* Product Section */}
       <div className="flex flex-col sm:flex-row gap-12">
         {/* Image Gallery */}
@@ -32,7 +32,7 @@ const Product = () => {
                 key={index}
                 onClick={() => setImage(item)}
                 className={`w-[22%] sm:w-full cursor-pointer rounded-lg shadow-sm transition-all duration-300 hover:opacity-80 ${
-                  image === item ? "ring-2 ring-amber-500" : ""
+                  image === item ? "" : ""
                 }`}
                 alt="thumb"
               />

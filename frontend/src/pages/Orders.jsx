@@ -30,7 +30,7 @@ const Orders = () => {
   }, [token]);
 
   return (
-    <div className="border-t pt-12 px-4 sm:px-6 lg:px-8 min-h-screen">
+    <div className="border-t px-4 pt-14 sm:px-6 lg:px-8 min-h-screen">
       <div className="max-w-6xl mx-auto">
         <div className="text-3xl font-bold mb-10 text-gray-800 text-center">
           <Title text1="MY" text2="ORDERS" />
@@ -113,3 +113,4 @@ const Orders = () => {
 };
 
 export default Orders;
+
