@@ -1,5 +1,6 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import connectDB from "../config/mongodb.js";
 
 //Placed Order
 const placeOrder = async (req, res) => {
