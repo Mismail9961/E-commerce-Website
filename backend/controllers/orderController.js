@@ -4,6 +4,7 @@ import userModel from "../models/userModel.js";
 //Placed Order
 const placeOrder = async (req, res) => {
   try {
+    await connectDB();
     const { userId, items, amount, address } = req.body;
 
     const orderData = {
@@ -38,6 +39,7 @@ const placeOrderRazorPay = async (req, res) => {};
 //All Orders for admin
 const allOrder = async (req, res) => {
   try {
+    await connectDB();
     const orders = await orderModel.find({});
     res.json({ success: true, orders });
   } catch (error) {
@@ -49,6 +51,7 @@ const allOrder = async (req, res) => {
 //User Order for Frontend
 const usersOrder = async (req, res) => {
   try {
+    await connectDB();
     const userId = req.user?.id || req.body.userId;
 
     if (!userId) {
@@ -69,6 +72,7 @@ const usersOrder = async (req, res) => {
 //update Order status for admin panel
 const updateStatus = async (req, res) => {
   try {
+    await connectDB();
     const {orderId,status} = req.body
     await orderModel.findByIdAndUpdate(orderId,{status})
     res.json({ success: true, message:"Status Updated"});
@@ -81,6 +85,7 @@ const updateStatus = async (req, res) => {
 // Delete Order for Admin
 const deleteOrder = async (req, res) => {
   try {
+    await connectDB();
     const { orderId } = req.body;
 
     if (!orderId) {
