@@ -108,10 +108,10 @@ const PlaceOrder = () => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-col lg:flex-row justify-between gap-8 pt-10 sm:pt-16 min-h-[58vh] border-t px-4 sm:px-8 lg:px-16"
+      className="flex flex-col lg:flex-row justify-between gap-6 lg:gap-10 pt-8 sm:pt-12 min-h-[58vh] border-t px-3 sm:px-6 lg:px-12"
     >
       {/* LEFT SIDE - Delivery Info */}
-      <div className="flex flex-col gap-6 w-full lg:max-w-[500px] bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-200">
+      <div className="flex flex-col gap-5 w-full lg:max-w-[480px] bg-white p-5 sm:p-7 rounded-2xl shadow-sm border border-gray-200">
         <div className="text-lg sm:text-2xl">
           <Title text1="Delivery" text2="Information" />
         </div>
@@ -123,7 +123,7 @@ const PlaceOrder = () => {
             name="firstName"
             value={formData.firstName}
             required
-            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none"
+            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none text-sm sm:text-base"
             type="text"
             placeholder="First Name"
           />
@@ -132,7 +132,7 @@ const PlaceOrder = () => {
             name="lastName"
             value={formData.lastName}
             required
-            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none"
+            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none text-sm sm:text-base"
             type="text"
             placeholder="Last Name"
           />
@@ -143,7 +143,7 @@ const PlaceOrder = () => {
           name="email"
           value={formData.email}
           required
-          className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none"
+          className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none text-sm sm:text-base"
           type="email"
           placeholder="Email Address"
         />
@@ -153,7 +153,7 @@ const PlaceOrder = () => {
           name="street"
           value={formData.street}
           required
-          className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none"
+          className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none text-sm sm:text-base"
           type="text"
           placeholder="Street"
         />
@@ -165,7 +165,7 @@ const PlaceOrder = () => {
             name="city"
             value={formData.city}
             required
-            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none"
+            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none text-sm sm:text-base"
             type="text"
             placeholder="City"
           />
@@ -174,7 +174,7 @@ const PlaceOrder = () => {
             name="state"
             value={formData.state}
             required
-            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none"
+            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none text-sm sm:text-base"
             type="text"
             placeholder="State"
           />
@@ -187,7 +187,7 @@ const PlaceOrder = () => {
             name="zipcode"
             value={formData.zipcode}
             required
-            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none"
+            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none text-sm sm:text-base"
             type="text"
             placeholder="Zip Code"
           />
@@ -196,7 +196,7 @@ const PlaceOrder = () => {
             name="country"
             value={formData.country}
             required
-            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none"
+            className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none text-sm sm:text-base"
             type="text"
             placeholder="Country"
           />
@@ -207,71 +207,71 @@ const PlaceOrder = () => {
           name="phone"
           value={formData.phone}
           required
-          className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none"
+          className="border border-gray-300 rounded-xl py-2 px-4 w-full focus:ring-1 focus:ring-black/70 outline-none text-sm sm:text-base"
           type="text"
           placeholder="Phone"
         />
       </div>
 
       {/* RIGHT SIDE - Payment + Cart Total */}
-      <div className="flex-1 flex flex-col gap-8">
+      <div className="flex-1 flex flex-col gap-6 lg:gap-8">
         {/* Cart Summary */}
-        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-200">
+        <div className="bg-white p-5 sm:p-7 rounded-2xl shadow-sm border border-gray-200">
           <CartTotal />
         </div>
 
         {/* Payment */}
-        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-gray-200">
+        <div className="bg-white p-5 sm:p-7 rounded-2xl shadow-sm border border-gray-200">
           <Title text1="Payment" text2="Method" />
 
           {/* Payment options */}
-          <div className="flex flex-col sm:flex-row gap-4 mt-6">
+          <div className="flex flex-col sm:flex-row flex-wrap gap-4 mt-6">
             <div
               onClick={() => setMethod("stripe")}
-              className={`flex items-center gap-4 border rounded-xl p-4 cursor-pointer transition-all ${
+              className={`flex items-center gap-3 sm:gap-4 border rounded-xl p-3 sm:p-4 cursor-pointer transition-all ${
                 method === "stripe"
                   ? "border-black shadow-md"
                   : "border-gray-200 hover:border-gray-400"
               }`}
             >
               <span
-                className={`min-w-4 h-4 rounded-full border flex items-center justify-center ${
+                className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                   method === "stripe" ? "bg-black" : "bg-white"
                 }`}
               ></span>
-              <img className="h-6" src={assets.stripe_logo} alt="Stripe" />
+              <img className="h-6 sm:h-7" src={assets.stripe_logo} alt="Stripe" />
             </div>
 
             <div
               onClick={() => setMethod("razorpay")}
-              className={`flex items-center gap-4 border rounded-xl p-4 cursor-pointer transition-all ${
+              className={`flex items-center gap-3 sm:gap-4 border rounded-xl p-3 sm:p-4 cursor-pointer transition-all ${
                 method === "razorpay"
                   ? "border-black shadow-md"
                   : "border-gray-200 hover:border-gray-400"
               }`}
             >
               <span
-                className={`min-w-4 h-4 rounded-full border flex items-center justify-center ${
+                className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                   method === "razorpay" ? "bg-black" : "bg-white"
                 }`}
               ></span>
-              <img className="h-6" src={assets.razorpay_logo} alt="Razorpay" />
+              <img className="h-6 sm:h-7" src={assets.razorpay_logo} alt="Razorpay" />
             </div>
 
             <div
               onClick={() => setMethod("cod")}
-              className={`flex items-center gap-4 border rounded-xl p-4 cursor-pointer transition-all ${
+              className={`flex items-center gap-3 sm:gap-4 border rounded-xl p-3 sm:p-4 cursor-pointer transition-all ${
                 method === "cod"
                   ? "border-black shadow-md"
                   : "border-gray-200 hover:border-gray-400"
               }`}
             >
               <span
-                className={`min-w-4 h-4 rounded-full border flex items-center justify-center ${
+                className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                   method === "cod" ? "bg-black" : "bg-white"
                 }`}
               ></span>
-              <p className="text-sm tracking-wide text-gray-700">
+              <p className="text-sm sm:text-base tracking-wide text-gray-700">
                 Cash on Delivery
               </p>
             </div>
@@ -282,7 +282,7 @@ const PlaceOrder = () => {
             <button
               type="submit"
               disabled={getCartCount() === 0}
-              className="uppercase tracking-wide bg-black text-white text-sm font-medium px-10 py-3 rounded-full hover:bg-gray-900 transition-all disabled:opacity-50"
+              className="uppercase tracking-wide bg-black text-white text-sm sm:text-base font-medium px-8 sm:px-10 py-3 rounded-full hover:bg-gray-900 transition-all disabled:opacity-50"
             >
               Place Order
             </button>
